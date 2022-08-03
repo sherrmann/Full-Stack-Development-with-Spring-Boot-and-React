@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.packt.cardatabase.service.UserDetailsServiceImpl;
 
@@ -19,6 +20,9 @@ import com.packt.cardatabase.service.UserDetailsServiceImpl;
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
+	
+	@Autowired
+	private AuthenticationFilter authenticationFilter;
 	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -41,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.antMatchers(HttpMethod.POST, "/login")
 		.permitAll()
 		// all other requests are secured
-		.anyRequest().authenticated();
+		.anyRequest().authenticated().and()
+		.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 }

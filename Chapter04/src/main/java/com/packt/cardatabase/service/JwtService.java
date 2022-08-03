@@ -29,7 +29,7 @@ public class JwtService {
 		
 		return token;
 	}
-	// Get a token from request Authorization header, verify a token and get username
+	// Get a token from request Authorisation header, verify a token and get username
 	public String getAuthUser(HttpServletRequest request) {
 		String tokenString = request.getHeader(HttpHeaders.AUTHORIZATION);
 		
