@@ -37,7 +37,7 @@ public class JwtService {
 			String user = Jwts.parserBuilder()
 					.setSigningKey(KEY)
 					.build()
-					.parseClaimsJwt(tokenString.replace(PREFIX, ""))
+					.parseClaimsJws(tokenString.replace(PREFIX, ""))
 					.getBody()
 					.getSubject();
 			
