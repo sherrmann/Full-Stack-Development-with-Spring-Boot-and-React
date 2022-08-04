@@ -2,6 +2,7 @@ package com.packt.cardatabase;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,8 +15,10 @@ class CardatabaseApplicationTests {
 	private CarController controller;
 
 	@Test
+	@DisplayName("CarController created and injected")
 	void contextLoads() {
 		assertThat(controller).isNotNull();
 	}
 
 }
+
