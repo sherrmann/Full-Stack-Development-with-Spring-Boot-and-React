@@ -25,6 +25,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	private AuthenticationFilter authenticationFilter;
 	
 	@Autowired
+	private AuthEntryPoint exceptionHandler;
+	
+	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
 	}	
@@ -46,6 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.permitAll()
 		// all other requests are secured
 		.anyRequest().authenticated().and()
+		.exceptionHandling()
+		.authenticationEntryPoint(exceptionHandler).and()
 		.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 }
