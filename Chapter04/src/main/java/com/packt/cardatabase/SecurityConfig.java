@@ -1,5 +1,7 @@
 package com.packt.cardatabase;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.packt.cardatabase.service.UserDetailsServiceImpl;
 
@@ -37,10 +42,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		return authenticationManager();
 	}
 	
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+		config.setAllowedMethods(Arrays.asList("*"));
+		config.setAllowedHeaders(Arrays.asList("*"));
+		config.setAllowCredentials(false);
+		config.applyPermitDefaultValues();
+		
+		source.registerCorsConfiguration("/**", config);
+		return source;
+	}
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		// disable CSRF
-		http.csrf().disable()
+		http.csrf().disable().cors().and()
 		.sessionManagement()
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 		.authorizeRequests()
